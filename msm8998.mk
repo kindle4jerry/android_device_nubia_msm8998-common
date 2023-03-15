@@ -160,7 +160,7 @@ PRODUCT_PACKAGES += \
 
 # DPM
 PRODUCT_PACKAGES += \
-    libshim_dpmframework
+    libcutils_shim
 
 # DRM
 PRODUCT_PACKAGES += \
@@ -171,10 +171,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.biometrics.fingerprint@2.1 \
     android.hardware.biometrics.fingerprint@2.1.vendor
-
-# For config.fs
-PRODUCT_PACKAGES += \
-    fs_config_files
 
 # fwk-detect
 PRODUCT_PACKAGES += \
@@ -212,7 +208,6 @@ PRODUCT_PACKAGES += \
 
 # HIDL
 PRODUCT_PACKAGES += \
-    android.hidl.allocator@1.0.vendor \
     android.hidl.memory@1.0.vendor \
     libhidltransport \
     libhidltransport.vendor \
