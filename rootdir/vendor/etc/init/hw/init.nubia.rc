@@ -94,14 +94,6 @@ on post-fs-data
     chmod 0775 /data/vendor/camera/arcsoft_calibration.bin
     chmod 0777 /data/vendor/camera/bokeh_depth.bin
 
-    # Fingerprint
-    mkdir /dev/fpcSocket 0770 system system
-    chmod 0777 /dev/fpcSocket
-    chown system system /sys/bus/platform/devices/1.fpc1020/irq
-    chmod 0660 /sys/bus/platform/devices/1.fpc1020/irq
-    chown system system /sys/bus/platform/devices/1.fpc1020/wakeup_enable
-    chmod 0660 /sys/bus/platform/devices/1.fpc1020/wakeup_enable
-
     # Nubia begin feature add sensors node
     chmod 0777 /persist/sensors
 
@@ -171,17 +163,6 @@ on post-fs-data
     chown system system /persist/sensors/xtalk_cal
     chmod 0664 /persist/sensors/xtalk_cal
 
-    # sensors key  event
-    chmod 0664 /dev/input/event0
-    chmod 0664 /dev/input/event1
-    chmod 0664 /dev/input/event2
-    chmod 0664 /dev/input/event3
-    chmod 0664 /dev/input/event4
-    chmod 0664 /dev/input/event5
-    chmod 0664 /dev/input/event6
-    chmod 0664 /dev/input/event7
-    chmod 0664 /dev/input/event8
-
 on property:persist.vendor.ssr.restart_level=1
     write /sys/bus/msm_subsys/devices/subsys0/restart_level system
     write /sys/bus/msm_subsys/devices/subsys1/restart_level system
@@ -240,3 +221,36 @@ service adsprpcd /system/vendor/bin/adsprpcd
    user media
    group media
    task_profiles ServiceCapacityLow
+
+service vendor.imsqmidaemon /vendor/bin/imsqmidaemon
+    class main
+    user radio
+    socket ims_qmid stream 0660 system radio
+    group radio log vendor_qti_diag
+    task_profiles ServiceCapacityLow
+
+service vendor.imsdatadaemon /vendor/bin/imsdatadaemon
+    class main
+    user radio
+    socket ims_datad stream 0660 system radio
+    group radio wifi inet log vendor_qti_diag
+    disabled
+    task_profiles ServiceCapacityLow
+
+on property:vendor.ims.QMI_DAEMON_STATUS=1
+    start vendor.imsdatadaemon
+
+service vendor.ims_rtp_daemon /vendor/bin/ims_rtp_daemon
+    class main
+    user radio
+    group radio vendor_qti_diag inet log
+    task_profiles ServiceCapacityLow
+
+service vendor.imsrcsservice /vendor/bin/imsrcsd
+    class main
+    user radio
+    group radio vendor_qti_diag inet log wakelock
+    task_profiles ServiceCapacityLow
+
+on property:vendor.ims.DATA_DAEMON_STATUS=1
+    restart vendor.ims_rtp_daemon

@@ -167,7 +167,6 @@ PRODUCT_PACKAGES += \
 
 # Fingerprint
 PRODUCT_PACKAGES += \
-    android.hardware.biometrics.fingerprint@2.1 \
     android.hardware.biometrics.fingerprint@2.1.vendor
 
 # fwk-detect
@@ -176,8 +175,6 @@ PRODUCT_PACKAGES += \
 
 # Gatekeeper
 PRODUCT_PACKAGES += \
-    android.hardware.gatekeeper@1.0-impl \
-    android.hardware.gatekeeper@1.0-service \
     android.hardware.gatekeeper@1.0.vendor
 
 # GPS
@@ -232,8 +229,6 @@ PRODUCT_COPY_FILES += \
 
 # Keymaster
 PRODUCT_PACKAGES += \
-    android.hardware.keymaster@3.0-impl \
-    android.hardware.keymaster@3.0-service \
     android.hardware.keymaster@4.0.vendor
 
 # LiveDisplay native
@@ -340,8 +335,8 @@ PRODUCT_COPY_FILES += \
 
 # Sensors
 PRODUCT_PACKAGES += \
-    android.hardware.sensors@1.0-impl:64 \
-    android.hardware.sensors@1.0-service \
+    android.hardware.sensors@1.0-impl.nubia_msm8998:64 \
+    android.hardware.sensors@1.0-service.nubia_msm8998 \
     libsensorndkbridge
 
 # Soong namespaces
@@ -369,10 +364,6 @@ PRODUCT_PACKAGES += \
 
 # Verity
 $(call inherit-product, build/target/product/verity.mk)
-
-# Vibrator
-PRODUCT_PACKAGES += \
-    android.hardware.vibrator-service.nubia
 
 # VR
 PRODUCT_PACKAGES += \

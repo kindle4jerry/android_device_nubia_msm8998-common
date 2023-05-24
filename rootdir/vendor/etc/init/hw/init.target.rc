@@ -415,4 +415,3 @@ service qvrd /system/bin/qvrservice
     group system camera graphics
     socket qvrservice stream 0666 system system
     capabilities SYS_NICE
-
