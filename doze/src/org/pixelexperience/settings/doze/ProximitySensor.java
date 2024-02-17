@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.pixelexperience.settings.doze;
+package org.derpfest.settings.doze;
 
 import android.content.Context;
 import android.hardware.Sensor;
