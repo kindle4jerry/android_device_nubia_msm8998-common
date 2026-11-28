@@ -255,6 +255,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 
 # Power
+$(call soong_config_set_bool,libui,legacy_gralloc,true)
+$(call soong_config_set_bool,libion,legacy_impl,true)
+
 PRODUCT_PACKAGES += \
     android.hardware.power-service.lineage-libperfmgr \
     android.hardware.power.stats-service.example \
