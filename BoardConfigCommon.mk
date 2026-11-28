@@ -46,6 +46,8 @@ BOARD_CUSTOM_BOOTIMG := true
 BOARD_CUSTOM_BOOTIMG_MK := $(PLATFORM_PATH)/mkbootimg.mk
 
 TARGET_KERNEL_SOURCE := kernel/nubia/msm8998
+TARGET_KERNEL_CLANG_VERSION := r563880c
+TARGET_KERNEL_NO_GCC := true
 
 # A/B
 AB_OTA_UPDATER := false
@@ -65,13 +67,17 @@ TARGET_FS_CONFIG_GEN := $(PLATFORM_PATH)/config.fs
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := \
     $(PLATFORM_PATH)/framework_compatibility_matrix.xml \
     hardware/qcom-caf/common/vendor_framework_compatibility_matrix.xml \
-    hardware/qcom-caf/common/vendor_framework_compatibility_matrix_legacy.xml \
-    vendor/lineage/config/device_framework_matrix.xml
+    hardware/qcom-caf/common/vendor_framework_compatibility_matrix_legacy.xml
 DEVICE_MANIFEST_FILE := $(PLATFORM_PATH)/manifest.xml
 DEVICE_MATRIX_FILE := hardware/qcom-caf/common/compatibility_matrix.xml
 
 # Media
 TARGET_USES_ION := true
+
+# Metadata
+# Android 17 needs a /metadata partition (aconfig storage, bootstat, vold).
+# The unused 64 MiB 'logdump' partition is repurposed for it (see fstab.qcom).
+BOARD_USES_METADATA_PARTITION := true
 
 # Partitions
 BOARD_BOOTIMAGE_PARTITION_SIZE := 67108864
@@ -108,12 +114,6 @@ TARGET_COPY_OUT_VENDOR := vendor
 
 TARGET_USERIMAGES_USE_EXT4 := true
 
-# Peripheral manager
-TARGET_PER_MGR_ENABLED := true
-
-# Power
-TARGET_USES_INTERACTION_BOOST := true
-
 # Properties
 TARGET_ODM_PROP += $(PLATFORM_PATH)/odm.prop
 TARGET_PRODUCT_PROP += $(PLATFORM_PATH)/product.prop
@@ -136,13 +136,11 @@ TARGET_RELEASETOOLS_EXTENSIONS := $(PLATFORM_PATH)
 ENABLE_VENDOR_RIL_SERVICE := true
 
 # SELinux
+include device/lineage/sepolicy/libion/sepolicy.mk
+include device/lineage/sepolicy/libperfmgr/sepolicy.mk
 include device/qcom/sepolicy-legacy-um/SEPolicy.mk
 SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(PLATFORM_PATH)/sepolicy/private
 BOARD_VENDOR_SEPOLICY_DIRS += $(PLATFORM_PATH)/sepolicy/vendor
-
-# Treble
-PRODUCT_FULL_TREBLE_OVERRIDE := true
-PRODUCT_VENDOR_MOVE_ENABLED := true
 
 # Verity
 # Only needed for signing
