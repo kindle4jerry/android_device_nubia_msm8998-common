@@ -12,7 +12,7 @@ VERITY_KEYS := $(LOCAL_PATH)/tools/verity.pk8 \
                $(LOCAL_PATH)/tools/verity.x509.pem
 
 ## Boot Image Generation
-$(INSTALLED_BOOTIMAGE_TARGET): $(MKBOOTIMG) $(INTERNAL_BOOTIMAGE_FILES) $(INSTALLED_KERNEL_TARGET)
+$(INSTALLED_BOOTIMAGE_TARGET): $(MKBOOTIMG) $(INTERNAL_BOOTIMAGE_FILES) $(INSTALLED_KERNEL_TARGET) $(BOOT_SIGNER)
 	$(call pretty,"Target boot image: $@")
 	$(hide) $(MKBOOTIMG) --kernel $(call bootimage-to-kernel,$(1)) $(INTERNAL_BOOTIMAGE_ARGS) $(INTERNAL_MKBOOTIMG_VERSION_ARGS) $(BOARD_MKBOOTIMG_ARGS) --output $@
 	$(BOOT_SIGNER) /boot $@ $(VERITY_KEYS) $@
@@ -22,7 +22,8 @@ $(INSTALLED_BOOTIMAGE_TARGET): $(MKBOOTIMG) $(INTERNAL_BOOTIMAGE_FILES) $(INSTAL
 ## Recovery Image Generation
 $(INSTALLED_RECOVERYIMAGE_TARGET): $(MKBOOTIMG) \
 		$(recovery_ramdisk) \
-		$(recovery_kernel)
+		$(recovery_kernel) \
+		$(BOOT_SIGNER)
 		$(call build-recoveryimage-target, $@)
 	@echo -e ${CL_CYN}"----- Making recovery image ------"${CL_RST}
 	$(hide) $(MKBOOTIMG) $(INTERNAL_RECOVERYIMAGE_ARGS) $(BOARD_MKBOOTIMG_ARGS) --output $@
