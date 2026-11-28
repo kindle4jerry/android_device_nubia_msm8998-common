@@ -1,3 +1,9 @@
+# eBPF
+# The 4.4 kernel has a backported 5.10-level eBPF implementation (see
+# kernel/bpf: ringbuf, btf, trampoline, bpf_iter). Android's networking BPF
+# stack reads this override instead of uname(2).
+ro.bpf.kver_override=5.10.239
+
 # Chipset
 ro.soc.manufacturer=Qualcomm
 ro.soc.model=MSM8998
