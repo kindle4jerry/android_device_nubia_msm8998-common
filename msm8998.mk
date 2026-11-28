@@ -17,7 +17,9 @@ $(call inherit-product, frameworks/native/build/phone-xhdpi-6144-dalvik-heap.mk)
 # from the Soong scan (otherwise Soong fails on its display dependency).
 PRODUCT_SOURCE_ROOT_DIRS += -vendor/qcom/opensource/power
 
-PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS := true
+# LOS 24.0 ships no kernel requirement entry for 4.4 (FCM 7+ starts at a
+# newer kernel), so kernel VINTF requirements cannot be enforced for NX563J.
+PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS := false
 
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \
