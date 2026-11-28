@@ -1,0 +1,2 @@
+allow vendor_qti_poweroffalarm_app cgroup:file w_file_perms;
+dontaudit vendor_qti_poweroffalarm_app user_profile_root_file:dir search;
