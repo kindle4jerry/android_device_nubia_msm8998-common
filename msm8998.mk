@@ -11,6 +11,11 @@ $(call inherit-product, hardware/qcom-caf/common/common.mk)
 
 # Setup dalvik vm configs
 $(call inherit-product, frameworks/native/build/phone-xhdpi-6144-dalvik-heap.mk)
+# The Android 17 QTI power HAL depends on QSSI display AIDL interfaces that
+# the legacy msm8998 display HAL does not provide. This device uses the
+# LineageOS libperfmgr power HAL instead, so prune the unused QTI power HAL
+# from the Soong scan (otherwise Soong fails on its display dependency).
+PRODUCT_SOURCE_ROOT_DIRS += -vendor/qcom/opensource/power
 
 PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS := true
 
@@ -252,8 +257,12 @@ PRODUCT_USE_DYNAMIC_PARTITIONS := true
 
 # Power
 PRODUCT_PACKAGES += \
-    android.hardware.power-service-qti \
-    android.hardware.power.stats@1.0-service.mock \
+    android.hardware.power-service.lineage-libperfmgr \
+    android.hardware.power.stats-service.example \
+    libqti-perfd-client
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/powerhint.json:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.json
 
 # QCOM
 PRODUCT_COPY_FILES += \
@@ -312,7 +321,10 @@ PRODUCT_PACKAGES += \
 
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
-    $(LOCAL_PATH)
+    $(LOCAL_PATH) \
+    hardware/google/interfaces \
+    hardware/google/pixel/power-libperfmgr \
+    hardware/lineage/interfaces/power-libperfmgr
 
 # Telephony
 PRODUCT_PACKAGES += \
